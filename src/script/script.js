@@ -24,6 +24,7 @@ const state = {
     actions: {
         countDown: setInterval(speedRunTime, 1000),
         timeId: setInterval(moleSurface, 1000),
+        moleIsDead: setInterval(moleKilled, 1000),
     },
 };
 //determina o tempo que você tem pra matar a Giant Mole
@@ -33,9 +34,19 @@ function speedRunTime(){
     if(state.values.tempo <= 0){
         clearInterval(state.actions.countDown);
         clearInterval(state.actions.timeId);
-        alert(`O tempo acabou!, você deu ${state.values.currentMoleHP - state.values.maxMoleHP}!`)
+        //playSound("perdeu")
+        alert(`O tempo acabou!, você deu ${state.values.currentMoleHP - state.values.maxMoleHP} de dano na Mole!`)
     }
+}
 
+function moleKilled(){
+    if(state.values.currentMoleHP <= 0){
+        clearInterval(state.actions.countDown);
+        clearInterval(state.actions.timeId);
+        clearInterval(state.actions.moleIsDead);
+        //playSound("ganhou")
+        alert('Você matou a Giant Mole! Falador te deve uma!');
+    }
 }
 
 //indica onde a Giant Mole está no momento
@@ -101,10 +112,12 @@ function setDamageDH(){
 }
 
 function main() {
-    BgMusic('The_Mad_Mole.ogg')
+    
     setDamageDH();
     onHit();
     //moleHit();
 };
 
+
 main();
+BgMusic('The_Mad_Mole.ogg')
